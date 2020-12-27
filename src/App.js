@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import person from "./Person/Person";
 import Person from "./Person/Person";
 
 class App extends Component {
@@ -12,15 +11,7 @@ class App extends Component {
     showPerson: false,
   };
 
-  switchNameHandler = (name) => {
-    this.setState({
-      persons: [
-        { name: name, age: "19" },
-        { name: "AniTheSin", age: "20" },
-      ],
-      
-    });
-  };
+  
 
   changeNameHandler = (event) => {
     this.setState({
@@ -30,6 +21,12 @@ class App extends Component {
       ],
     });
   };
+
+  deletePersonHandler = (personIndex) => {
+    const persons = [...this.state.persons];
+    persons.splice(personIndex,1);
+    this.setState({persons:persons});
+  }
 
   togglePersonHandler = () => {
     const doesShow = this.state.showPerson;
@@ -50,19 +47,14 @@ class App extends Component {
     if(this.state.showPerson){
       persons = (
         <div>
-            <Person
-              name={this.state.persons[0].name}
-              age={this.state.persons[0].age}
-              click={this.switchNameHandler.bind(this, "Abhishek")}
-              changed={this.changeNameHandler}
+          {this.state.persons.map((person,index) => {
+            return <Person
+              click={() => this.deletePersonHandler(index)} 
+              name = {person.name}
+              age = {person.age}
             />
-            <Person
-              name={this.state.persons[1].name}
-              age={this.state.persons[1].age}
-            >
-              Is my gaming id
-            </Person> 
-          </div>
+          })}     
+        </div>
       );
     }
     return (
